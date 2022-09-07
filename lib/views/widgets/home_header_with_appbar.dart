@@ -65,37 +65,44 @@ class _HomeHeaderWithAppBarState extends State<HomeHeaderWithAppBar> {
             CarouselSlider(
               items: products.map(
                 (product) {
-                  return Column(
-                    children: [
-                      SizedBox(
-                        height: 180,
-                        child: Image.asset(product.imageUrl),
-                      ),
-                      currentProductId == product.id
-                          ? Column(
-                              children: [
-                                const SizedBox(height: 10),
-                                Text(
-                                  product.title,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                    color: product.colors[0],
+                  return GestureDetector(
+                    onTap: () {
+                      if (currentProductId == product.id) {
+                        print('men tug\'uldim ${product.id}');
+                      }
+                    },
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 180,
+                          child: Image.asset(product.imageUrl),
+                        ),
+                        currentProductId == product.id
+                            ? Column(
+                                children: [
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    product.title,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      color: product.colors[0],
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  '\$${product.price}',
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    '\$${product.price}',
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            )
-                          : const SizedBox(),
-                    ],
+                                ],
+                              )
+                            : const SizedBox(),
+                      ],
+                    ),
                   );
                 },
               ).toList(),
