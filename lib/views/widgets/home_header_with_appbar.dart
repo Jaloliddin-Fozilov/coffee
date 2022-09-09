@@ -22,22 +22,25 @@ class _HomeHeaderWithAppBarState extends State<HomeHeaderWithAppBar> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        AnimatedContainer(
-          height: 220,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(180),
-              bottomRight: Radius.circular(180),
+        Hero(
+          tag: currentProductId + activeColors.toString(),
+          child: AnimatedContainer(
+            height: 220,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(180),
+                bottomRight: Radius.circular(180),
+              ),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: activeColors,
+              ),
             ),
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: activeColors,
-            ),
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.linear,
           ),
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.linear,
         ),
         SizedBox(
           height: 80,
@@ -76,7 +79,10 @@ class _HomeHeaderWithAppBarState extends State<HomeHeaderWithAppBar> {
                       children: [
                         SizedBox(
                           height: 180,
-                          child: Image.asset(product.imageUrl),
+                          child: Hero(
+                            tag: product.id,
+                            child: Image.asset(product.imageUrl),
+                          ),
                         ),
                         currentProductId == product.id
                             ? Column(
