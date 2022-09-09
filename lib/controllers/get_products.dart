@@ -68,4 +68,8 @@ class GetProducts {
   List<ProductModel> get list {
     return [..._list];
   }
+
+  ProductModel findProductById(String id) {
+    return _list.firstWhere((product) => product.id == id);
+  }
 }

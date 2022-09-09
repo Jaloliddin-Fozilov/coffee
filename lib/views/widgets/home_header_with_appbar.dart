@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:coffee/models/product_model.dart';
+import 'package:get/get.dart';
 import '../../controllers/get_products.dart';
 
 class HomeHeaderWithAppBar extends StatefulWidget {
@@ -68,7 +69,7 @@ class _HomeHeaderWithAppBarState extends State<HomeHeaderWithAppBar> {
                   return GestureDetector(
                     onTap: () {
                       if (currentProductId == product.id) {
-                        print('men tug\'uldim ${product.id}');
+                        Get.toNamed('/detail', arguments: product.id);
                       }
                     },
                     child: Column(

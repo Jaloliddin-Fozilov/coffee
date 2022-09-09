@@ -1,3 +1,4 @@
+import 'package:coffee/views/screens/detail_page.dart';
 import 'package:coffee/views/screens/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,7 +14,11 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Coffee App',
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      initialRoute: '/home',
+      getPages: [
+        GetPage(name: '/home', page: () => HomePage()),
+        GetPage(name: '/detail', page: () => DetailPage())
+      ],
     );
   }
 }
