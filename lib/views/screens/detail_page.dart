@@ -6,8 +6,8 @@ import '../../controllers/get_products.dart';
 class DetailPage extends StatefulWidget {
   DetailPage({super.key});
 
-  static const String _submit = "Submit";
-  static const String _success = "Success";
+  static const String _submit = "Add to order";
+  static const String _success = "Added";
 
   @override
   State<DetailPage> createState() => _DetailPageState();
@@ -18,6 +18,8 @@ class _DetailPageState extends State<DetailPage> {
 
   bool aboutIsOpen = false;
   bool addToCartIsOpen = true;
+
+  int quantity = 0;
 
   final MultiStateButtonController multiStateButtonController =
       MultiStateButtonController(initialStateName: DetailPage._submit);
@@ -63,69 +65,137 @@ class _DetailPageState extends State<DetailPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: aboutIsOpen
+                    ? MainAxisAlignment.start
+                    : MainAxisAlignment.center,
                 children: [
-                  Column(
-                    children: [
-                      const SizedBox(height: 80),
-                      Hero(
-                        tag: product.id,
-                        child: Image.asset(
-                          width: 150,
-                          product.imageUrl,
+                  aboutIsOpen
+                      ? Column(
+                          children: [
+                            const SizedBox(height: 80),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const SizedBox(width: 30),
+                                Hero(
+                                  tag: product.id,
+                                  child: Image.asset(
+                                    height: 80,
+                                    product.imageUrl,
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      product.title,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 22,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      '\$${product.price}',
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            const SizedBox(height: 80),
+                            Hero(
+                              tag: product.id,
+                              child: Image.asset(
+                                width: 150,
+                                product.imageUrl,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            Text(
+                              product.title,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              '\$${product.price}',
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                          ],
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      Text(
-                        product.title,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        '\$${product.price}',
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                    ],
-                  ),
                 ],
               ),
               AnimatedContainer(
                 duration: const Duration(seconds: 1),
-                height: addToCartIsOpen ? 260 : 185,
+                height: aboutIsOpen
+                    ? 455
+                    : addToCartIsOpen
+                        ? 260
+                        : 185,
                 child: Stack(
                   children: [
                     Positioned(
-                      child: AnimatedContainer(
-                        padding: const EdgeInsets.only(top: 20, left: 20),
-                        height: 100,
-                        width: Get.width,
-                        decoration: BoxDecoration(
-                          color: product.colors[0],
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30),
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            aboutIsOpen = !aboutIsOpen;
+                            addToCartIsOpen = false;
+                          });
+                        },
+                        child: AnimatedContainer(
+                          padding: const EdgeInsets.only(top: 20, left: 20),
+                          height: 380,
+                          width: Get.width,
+                          decoration: BoxDecoration(
+                            color: product.colors[0],
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30),
+                            ),
                           ),
-                        ),
-                        duration: const Duration(seconds: 1),
-                        child: const Text(
-                          'About',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
+                          duration: const Duration(seconds: 1),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'About',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              aboutIsOpen
+                                  ? Text(
+                                      product.description,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  : const SizedBox()
+                            ],
                           ),
                         ),
                       ),
                     ),
                     Positioned(
-                      top: 60,
+                      top: aboutIsOpen ? 330 : 60,
                       child: AnimatedContainer(
                         padding: const EdgeInsets.only(top: 20, left: 20),
                         height: 100,
@@ -149,7 +219,7 @@ class _DetailPageState extends State<DetailPage> {
                       ),
                     ),
                     Positioned(
-                      top: 120,
+                      top: aboutIsOpen ? 390 : 120,
                       child: GestureDetector(
                         onTap: () {
                           setState(() {
@@ -186,20 +256,28 @@ class _DetailPageState extends State<DetailPage> {
                                   Row(
                                     children: [
                                       IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          setState(() {
+                                            quantity--;
+                                          });
+                                        },
                                         icon: const Icon(
                                           Icons.remove_circle_outline,
                                           size: 36,
                                         ),
                                       ),
                                       const SizedBox(width: 10),
-                                      const Text(
-                                        '1',
-                                        style: TextStyle(fontSize: 30),
+                                      Text(
+                                        quantity.toString(),
+                                        style: const TextStyle(fontSize: 30),
                                       ),
                                       const SizedBox(width: 10),
                                       IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          setState(() {
+                                            quantity++;
+                                          });
+                                        },
                                         icon: const Icon(
                                           Icons.add_circle_outline,
                                           size: 36,
@@ -273,8 +351,8 @@ class _DetailPageState extends State<DetailPage> {
                                             begin: Alignment.centerLeft,
                                             end: Alignment.centerRight,
                                             colors: [
-                                              Color.fromARGB(255, 32, 120, 35),
-                                              Color.fromARGB(255, 102, 187, 106)
+                                              Color.fromARGB(255, 2, 206, 9),
+                                              Color.fromARGB(255, 121, 234, 127)
                                             ],
                                           ),
                                         ),
@@ -287,8 +365,8 @@ class _DetailPageState extends State<DetailPage> {
                                     ],
                                   ),
                                   Text(
-                                    '\$60.5',
-                                    style: TextStyle(
+                                    '\$${(product.price * quantity).toStringAsFixed(2)}',
+                                    style: const TextStyle(
                                       fontSize: 22,
                                     ),
                                   )
