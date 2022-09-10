@@ -7,6 +7,9 @@ class DetailPage extends StatelessWidget {
 
   final product = GetProducts().findProductById(Get.arguments);
 
+  bool aboutIsOpen = false;
+  bool addToCartIsOpen = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,7 +85,7 @@ class DetailPage extends StatelessWidget {
                 ],
               ),
               SizedBox(
-                height: 240,
+                height: 220,
                 child: Stack(
                   children: [
                     Positioned(
@@ -135,8 +138,9 @@ class DetailPage extends StatelessWidget {
                     Positioned(
                       top: 120,
                       child: AnimatedContainer(
-                        padding: const EdgeInsets.only(top: 20, left: 20),
-                        height: 120,
+                        padding:
+                            const EdgeInsets.only(top: 20, left: 20, right: 20),
+                        height: addToCartIsOpen ? 200 : 100,
                         width: Get.width,
                         decoration: const BoxDecoration(
                           color: Colors.white,
@@ -146,13 +150,46 @@ class DetailPage extends StatelessWidget {
                           ),
                         ),
                         duration: const Duration(seconds: 1),
-                        child: const Text(
-                          'Order',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  'Order',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(
+                                        Icons.remove_circle_outline,
+                                        size: 36,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    const Text(
+                                      '1',
+                                      style: TextStyle(fontSize: 30),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(
+                                        Icons.add_circle_outline,
+                                        size: 36,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     ),
